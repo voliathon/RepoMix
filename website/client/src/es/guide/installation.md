@@ -1,3 +1,8 @@
+---
+title: "Instalación"
+description: "Instala Repomix con npx, npm, Yarn, Bun, Homebrew, Docker, extensiones de VS Code o extensiones de navegador y verifica la configuración de la CLI."
+---
+
 # Instalación
 
 ## Usando npx (no requiere instalación)
@@ -69,7 +74,7 @@ Instálala desde el [VSCode Marketplace](https://marketplace.visualstudio.com/it
 
 ## Requisitos del sistema
 
-- Node.js: ≥ 20.0.0
+- Node.js: ≥ 22.0.0
 - Git: Requerido para el procesamiento de repositorios remotos
 
 ## Verificación

@@ -1,3 +1,8 @@
+---
+title: "Kurulum"
+description: "Repomix’i npx, npm, Yarn, Bun, Homebrew, Docker, VS Code eklentileri veya tarayıcı eklentileriyle kurun ve CLI yapılandırmasını doğrulayın."
+---
+
 # Kurulum
 
 ## npx ile Kullanım (Kurulum Gerekmez)
@@ -69,7 +74,7 @@ Herhangi bir GitHub deposundan Repomix'e anında erişin! Chrome eklentimiz, Git
 
 ## Sistem Gereksinimleri
 
-- Node.js: ≥ 20.0.0
+- Node.js: ≥ 22.0.0
 - Git: Uzak depo işleme için gerekli
 
 ## Doğrulama

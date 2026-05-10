@@ -1,3 +1,8 @@
+---
+title: "Repomix'e Katkıda Bulunma"
+description: "Repomix geliştirme ortamını kurun, testleri çalıştırın, kodu lint edin, proje yapısını anlayın ve open source projeye değişikliklerle katkıda bulunun."
+---
+
 # Repomix'e Katkıda Bulunma
 
 **Repomix**'e gösterdiğiniz ilgi için teşekkürler! Projeyi daha da iyi hale getirmenize yardımcı olmaktan memnuniyet duyarız. Bu kılavuz, projeye katkıda bulunmaya başlamanız için gereken bilgileri sunar.
@@ -15,7 +20,7 @@
 
 ### Ön Koşullar
 
-- Node.js ≥ 20.0.0
+- Node.js ≥ 22.0.0
 - Git
 - npm
 - Docker (isteğe bağlı; web sitesini çalıştırmak veya konteyner içinde geliştirme için)

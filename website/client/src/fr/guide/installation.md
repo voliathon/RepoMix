@@ -1,3 +1,8 @@
+---
+title: "Installation"
+description: "Installez Repomix avec npx, npm, Yarn, Bun, Homebrew, Docker, des extensions VS Code ou navigateur, puis vérifiez la configuration de la CLI."
+---
+
 # Installation
 
 ## Utilisation avec npx (Sans installation requise)
@@ -67,7 +72,7 @@ Accédez instantanément à Repomix directement depuis n'importe quel dépôt Gi
 
 ## Configuration requise
 
-- Node.js: ≥ 20.0.0
+- Node.js: ≥ 22.0.0
 - Git: Requis pour le traitement des dépôts distants
 
 ## Vérification

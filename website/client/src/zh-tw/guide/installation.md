@@ -1,3 +1,8 @@
+---
+title: 安裝
+description: 使用 npx、npm、Yarn、Bun、Homebrew、Docker、VS Code 擴充功能或瀏覽器擴充功能安裝 Repomix，並驗證 CLI 設定。
+---
+
 # 安裝
 
 ## 使用 npx（無需安裝）
@@ -69,7 +74,7 @@ docker run -v ./output:/app -it --rm ghcr.io/yamadashy/repomix --remote yamadash
 
 ## 系統要求
 
-- Node.js: ≥ 20.0.0
+- Node.js: ≥ 22.0.0
 - Git: 處理遠端倉庫時需要
 
 ## 驗證安裝

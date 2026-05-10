@@ -1,3 +1,8 @@
+---
+title: "Contribuer à Repomix"
+description: "Configurez l'environnement de développement Repomix, exécutez les tests et le linting, comprenez la structure du projet et contribuez au projet open source."
+---
+
 # Contribuer à Repomix
 
 Merci pour votre intérêt pour **Repomix** ! 🚀 Nous apprécions votre aide pour l'améliorer davantage. Ce guide vous aidera à commencer à contribuer au projet.
@@ -49,7 +54,7 @@ npm run lint
 
 ### Prérequis
 
-- Node.js ≥ 20.0.0
+- Node.js ≥ 22.0.0
 - Git
 - npm
 - Docker (optionnel, pour exécuter le site web ou le développement conteneurisé)

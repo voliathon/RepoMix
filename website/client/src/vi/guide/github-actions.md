@@ -1,3 +1,8 @@
+---
+title: GitHub Actions
+description: Tự động hóa Repomix trong GitHub Actions để đóng gói repository cho phân tích AI, CI workflow, artifact, code review và output đã nén.
+---
+
 # GitHub Actions
 
 Repomix có thể được tích hợp vào quy trình CI/CD của bạn bằng cách sử dụng GitHub Actions, cho phép bạn tự động đóng gói kho lưu trữ của mình và cung cấp đầu ra cho các bước tiếp theo.
@@ -28,7 +33,7 @@ jobs:
   pack:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -47,7 +52,7 @@ jobs:
           style: 'json'
 
       - name: Upload packed output
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: repomix-output
           path: repomix-output.xml
@@ -85,7 +90,7 @@ jobs:
   pack:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -98,7 +103,7 @@ jobs:
           show-line-numbers: true
 
       - name: Upload packed output
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: codebase
           path: codebase.md
@@ -117,7 +122,7 @@ jobs:
   pack:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -143,7 +148,7 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -174,14 +179,14 @@ jobs:
   pack:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install Repomix
         run: npm install -g repomix
@@ -190,7 +195,7 @@ jobs:
         run: repomix --style markdown --output-file codebase.md
 
       - name: Upload packed output
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: codebase
           path: codebase.md

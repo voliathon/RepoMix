@@ -1,3 +1,8 @@
+---
+title: 參與 Repomix 開發
+description: 設定 Repomix 開發環境、執行測試與 lint、了解專案結構，並向開源專案貢獻變更。
+---
+
 # 參與 Repomix 開發
 
 感謝您對 **Repomix** 的興趣！🚀 我們非常歡迎您的幫助，讓它變得更好。本指南將幫助您開始為專案做貢獻。
@@ -51,7 +56,7 @@ npm run lint
 
 ### 前提條件
 
-- Node.js ≥ 20.0.0
+- Node.js ≥ 22.0.0
 - Git
 - npm
 - Docker（可選，用於運行網站或容器化開發）

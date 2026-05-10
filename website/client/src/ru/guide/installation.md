@@ -1,3 +1,8 @@
+---
+title: "Установка"
+description: "Установите Repomix через npx, npm, Yarn, Bun, Homebrew, Docker, расширения VS Code или браузерные расширения и проверьте настройку CLI."
+---
+
 # Установка
 
 ## Использование npx (без установки)
@@ -69,7 +74,7 @@ docker run -v ./output:/app -it --rm ghcr.io/yamadashy/repomix --remote yamadash
 
 ## Системные требования
 
-- Node.js: ≥ 20.0.0
+- Node.js: ≥ 22.0.0
 - Git: Требуется для обработки удалённых репозиториев
 
 ## Проверка

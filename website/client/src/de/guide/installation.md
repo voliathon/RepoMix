@@ -1,3 +1,8 @@
+---
+title: "Installation"
+description: "Installieren Sie Repomix mit npx, npm, Yarn, Bun, Homebrew, Docker, VS Code-Erweiterungen oder Browser-Erweiterungen und prüfen Sie die CLI-Einrichtung."
+---
+
 # Installation
 
 ## Verwendung von npx (Keine Installation erforderlich)
@@ -69,7 +74,7 @@ Erhalten Sie direkten Zugang zu Repomix von jedem GitHub-Repository! Unsere Chro
 
 ## Systemanforderungen
 
-- Node.js: ≥ 20.0.0
+- Node.js: ≥ 22.0.0
 - Git: Erforderlich für die Verarbeitung von Remote-Repositories
 
 ## Überprüfung

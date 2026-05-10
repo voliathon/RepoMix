@@ -1,3 +1,8 @@
+---
+title: "Instalação"
+description: "Instale o Repomix com npx, npm, Yarn, Bun, Homebrew, Docker, extensões do VS Code ou extensões de navegador e verifique a configuração da CLI."
+---
+
 # Instalação
 
 ## Usando npx (Nenhuma Instalação Necessária)
@@ -69,7 +74,7 @@ Obtenha acesso instantâneo ao Repomix diretamente de qualquer repositório GitH
 
 ## Requisitos de Sistema
 
-- Node.js: ≥ 20.0.0
+- Node.js: ≥ 22.0.0
 - Git: Necessário para processamento de repositório remoto
 
 ## Verificação

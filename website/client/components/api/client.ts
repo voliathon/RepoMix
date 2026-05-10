@@ -60,7 +60,20 @@ export class ApiError extends Error {
   }
 }
 
+// Wire-protocol stages — must stay aligned with the server-emitted SSE
+// values (`website/server/src/types.ts:PackProgressStage`). `onProgress`
+// callbacks receive only these, so any new server stage requires a
+// deliberate type update on both sides.
 export type PackProgressStage = 'cache-check' | 'cloning' | 'repository-fetch' | 'extracting' | 'processing';
+
+// Display-only superset. `verifying` is a client-only synthetic stage
+// shown while the server runs Turnstile siteverify (before any SSE event
+// arrives); usePackRequest sets it locally between `takeToken()` returning
+// and the first onProgress callback firing, so the loading UI shows a
+// meaningful step instead of a generic "...". Keeping it out of
+// `PackProgressStage` prevents the wire contract from drifting silently
+// when display-only stages get added or renamed.
+export type DisplayProgressStage = PackProgressStage | 'verifying';
 
 export interface PackStreamCallbacks {
   onProgress?: (stage: PackProgressStage, message?: string) => void;
@@ -88,7 +101,11 @@ interface StreamErrorEvent {
 
 type StreamEvent = ProgressEvent | ResultEvent | StreamErrorEvent;
 
-export async function packRepository(request: PackRequest, callbacks?: PackStreamCallbacks): Promise<PackResult> {
+export async function packRepository(
+  request: PackRequest,
+  callbacks?: PackStreamCallbacks,
+  turnstileToken?: string,
+): Promise<PackResult> {
   const formData = new FormData();
 
   if (request.file) {
@@ -99,8 +116,14 @@ export async function packRepository(request: PackRequest, callbacks?: PackStrea
   formData.append('format', request.format);
   formData.append('options', JSON.stringify(request.options));
 
+  // Token rides as a header rather than a form field to keep packRequestSchema
+  // free of cross-cutting concerns; the server-side turnstileMiddleware reads
+  // it before the schema validation runs.
+  const headers: HeadersInit = turnstileToken ? { 'X-Turnstile-Token': turnstileToken } : {};
+
   const response = await fetch(`${API_BASE_URL}/api/pack`, {
     method: 'POST',
+    headers,
     body: formData,
     signal: callbacks?.signal,
   });

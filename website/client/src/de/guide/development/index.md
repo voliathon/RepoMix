@@ -1,3 +1,8 @@
+---
+title: "Zu Repomix beitragen"
+description: "Richten Sie die Repomix-Entwicklungsumgebung ein, führen Sie Tests und Linting aus, verstehen Sie die Projektstruktur und tragen Sie zum Open-Source-Projekt bei."
+---
+
 # Zu Repomix beitragen
 
 Vielen Dank für Ihr Interesse an **Repomix**! 🚀 Wir freuen uns über Ihre Hilfe, um es noch besser zu machen. Dieser Leitfaden hilft Ihnen, mit der Mitarbeit am Projekt zu beginnen.
@@ -51,7 +56,7 @@ npm run lint
 
 ### Voraussetzungen
 
-- Node.js ≥ 20.0.0
+- Node.js ≥ 22.0.0
 - Git
 - npm
 - Docker (optional, für die Ausführung der Website oder containerisierte Entwicklung)
