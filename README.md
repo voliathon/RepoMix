@@ -9,6 +9,17 @@
 ### [Warp, built for coding with multiple AI agents](https://go.warp.dev/repomix)
 [Available for MacOS, Linux, & Windows](https://go.warp.dev/repomix)<br>
 
+   <br>
+   <a href="https://coderabbit.link/repomix">
+      <picture>
+         <source media="(prefers-color-scheme: dark)" srcset="website/client/src/public/images/sponsors/coderabbit/dark.png">
+         <img alt="CodeRabbit sponsorship" width="400" src="website/client/src/public/images/sponsors/coderabbit/light.png">
+      </picture>
+   </a>
+
+### [CodeRabbit | AI Code Reviews](https://coderabbit.link/repomix)
+[Cut code review time & bugs in half, instantly.](https://coderabbit.link/repomix)<br>
+
 
 </div>
 
@@ -41,6 +52,7 @@
 [![npm](https://img.shields.io/npm/d18m/repomix)](https://www.npmjs.com/package/repomix)
 [![Actions Status](https://github.com/yamadashy/repomix/actions/workflows/ci.yml/badge.svg)](https://github.com/yamadashy/repomix/actions?query=workflow%3A"ci")
 [![codecov](https://codecov.io/github/yamadashy/repomix/graph/badge.svg?token=PYQHDJ5SHX)](https://codecov.io/github/yamadashy/repomix)
+[![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/yamadashy/repomix?utm_source=oss&utm_medium=github&utm_campaign=yamadashy%2Frepomix&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)](https://coderabbit.ai)
 [![Sponsors](https://img.shields.io/github/sponsors/yamadashy?logo=github)](https://github.com/sponsors/yamadashy)
 [![Discord](https://badgen.net/discord/online-members/wNYzTwZFku?icon=discord&label=discord)](https://discord.gg/wNYzTwZFku)
 
