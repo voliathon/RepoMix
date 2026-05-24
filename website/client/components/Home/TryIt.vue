@@ -2,23 +2,38 @@
   <div class="container">
     <form class="try-it-container" @submit.prevent="handleSubmit($event)">
       <div class="input-row">
-        <div class="tab-container">
+        <div class="tab-container" role="tablist" aria-label="Repository input source">
           <button
+            id="tab-url"
             type="button"
+            role="tab"
+            aria-label="Remote repository URL"
+            aria-controls="tabpanel-input"
+            :aria-selected="mode === 'url'"
             :class="{ active: mode === 'url' }"
             @click="setMode('url')"
           >
             <Link2 size="20" class="icon" />
           </button>
           <button
+            id="tab-folder"
             type="button"
+            role="tab"
+            aria-label="Upload local folder"
+            aria-controls="tabpanel-input"
+            :aria-selected="mode === 'folder'"
             :class="{ active: mode === 'folder' }"
             @click="setMode('folder')"
           >
             <FolderOpen size="20" class="icon" />
           </button>
           <button
+            id="tab-file"
             type="button"
+            role="tab"
+            aria-label="Upload ZIP archive"
+            aria-controls="tabpanel-input"
+            :aria-selected="mode === 'file'"
             :class="{ active: mode === 'file' }"
             @click="setMode('file')"
           >
@@ -26,7 +41,12 @@
           </button>
         </div>
 
-        <div class="input-field">
+        <div
+          id="tabpanel-input"
+          class="input-field"
+          role="tabpanel"
+          :aria-labelledby="`tab-${mode}`"
+        >
           <TryItFileUpload
             v-if="mode === 'file'"
             @upload="handleFileUpload"
@@ -345,6 +365,12 @@ onMounted(() => {
   color: white;
 }
 
+.tab-container button:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: -2px;
+  z-index: 1;
+}
+
 .tab-container button.active::before {
   display: none;
 }
@@ -450,6 +476,18 @@ onMounted(() => {
   border-width: 8px;
   border-style: solid;
   border-color: #333 transparent transparent transparent;
+}
+
+/* The Turnstile widget is executed programmatically via execution: 'execute'.
+   The container must remain in the DOM (removing it prevents widget rendering)
+   but should not affect page layout or be visible. */
+.turnstile-container {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 </style>
