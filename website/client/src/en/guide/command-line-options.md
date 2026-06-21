@@ -86,6 +86,7 @@ description: Reference every Repomix CLI option for input, output, file selectio
 | Option | Description |
 |--------|-------------|
 | `--skill-generate [name]` | Generate Claude Agent Skills format output to `.claude/skills/<name>/` directory (name auto-generated if omitted) |
+| `--skill-project-name <name>` | Override the project name used in generated Skills descriptions |
 | `--skill-output <path>` | Specify skill output directory path directly (skips location prompt) |
 | `-f, --force` | Skip all confirmation prompts (e.g., skill directory overwrite) |
 
@@ -135,6 +136,9 @@ repomix --remote https://github.com/user/repo/commit/836abcd7335137228ad77feb286
 
 # Remote repository with shorthand
 repomix --remote user/repo
+
+# Remote repository with shorthand (auto-detected, no --remote needed)
+repomix user/repo
 
 # Using stdin for file list
 find src -name "*.ts" -type f | repomix --stdin

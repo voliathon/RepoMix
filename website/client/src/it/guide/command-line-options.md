@@ -86,8 +86,15 @@ description: "Consulta tutte le opzioni della CLI Repomix per input, output, sel
 | Opzione | Descrizione |
 |---------|-------------|
 | `--skill-generate [name]` | Genera output in formato Claude Agent Skills nella directory `.claude/skills/<name>/` (nome auto-generato se omesso) |
+| `--skill-project-name <name>` | Sovrascrivi il nome del progetto usato nelle descrizioni delle Skills generate |
 | `--skill-output <path>` | Specifica direttamente il percorso della directory di output delle skill (salta il prompt di posizione) |
 | `-f, --force` | Salta tutti i prompt di conferma (es: sovrascrittura della directory delle skill) |
+
+## Opzioni della modalità Watch
+
+- `-w, --watch`: Monitora le modifiche ai file e ricompatta automaticamente. Vengono rilevati i file nuovi, modificati ed eliminati, le modifiche rapide vengono raggruppate con debounce (300 ms) e viene stampato un timestamp dopo ogni ricostruzione. Premi `Ctrl+C` per interrompere.
+
+La modalità watch funziona solo con directory locali, quindi non può essere combinata con `--remote`, un URL di repository remoto passato come argomento posizionale, `--stdout`, `--stdin`, `--split-output`, `--skill-generate` o `--copy`. Queste restrizioni si applicano sia che l'opzione venga impostata da riga di comando sia nel file di configurazione.
 
 ## Risorse correlate
 
@@ -126,6 +133,9 @@ repomix --remote https://github.com/user/repo/commit/836abcd7335137228ad77feb286
 # Repository remoto con forma abbreviata
 repomix --remote user/repo
 
+# Repository remoto con forma abbreviata (rilevato automaticamente, senza --remote)
+repomix user/repo
+
 # Lista file usando stdin
 find src -name "*.ts" -type f | repomix --stdin
 git ls-files "*.js" | repomix --stdin
@@ -140,5 +150,9 @@ repomix --include-diffs --include-logs  # Include sia diff che log
 # Analisi del conteggio token
 repomix --token-count-tree
 repomix --token-count-tree 1000  # Mostra solo file/directory con 1000+ token
+
+# Modalità watch: ricompatta automaticamente quando i file cambiano
+repomix --watch
+repomix -w --include "src/**/*.ts"
 ```
 
