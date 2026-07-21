@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
@@ -67,6 +67,13 @@ jobs:
       - name: Install website server dependencies
         working-directory: website/server
         run: |
+          # npm 12 fails to prepare the github:repomix git dependency: its prep
+          # child process re-reads .npmrc (min-release-age=7) and hits npm's own
+          # --before, which cannot coexist. Setting npm_config_min_release_age=0
+          # does not help (0 still counts as "provided", and the child re-reads
+          # .npmrc), so downgrade to npm 11.4.0, which predates the flag.
+          # Matches website/server/Dockerfile.
+          npm install -g npm@11.4.0
           npm ci
           npm link repomix
       - name: Lint website server
@@ -78,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
@@ -93,6 +100,13 @@ jobs:
       - name: Install website server dependencies
         working-directory: website/server
         run: |
+          # npm 12 fails to prepare the github:repomix git dependency: its prep
+          # child process re-reads .npmrc (min-release-age=7) and hits npm's own
+          # --before, which cannot coexist. Setting npm_config_min_release_age=0
+          # does not help (0 still counts as "provided", and the child re-reads
+          # .npmrc), so downgrade to npm 11.4.0, which predates the flag.
+          # Matches website/server/Dockerfile.
+          npm install -g npm@11.4.0
           npm ci
           npm link repomix
       - name: Test website server
@@ -104,7 +118,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
@@ -119,6 +133,13 @@ jobs:
       - name: Install website server dependencies
         working-directory: website/server
         run: |
+          # npm 12 fails to prepare the github:repomix git dependency: its prep
+          # child process re-reads .npmrc (min-release-age=7) and hits npm's own
+          # --before, which cannot coexist. Setting npm_config_min_release_age=0
+          # does not help (0 still counts as "provided", and the child re-reads
+          # .npmrc), so downgrade to npm 11.4.0, which predates the flag.
+          # Matches website/server/Dockerfile.
+          npm install -g npm@11.4.0
           npm ci
           npm link repomix
       - name: Bundle website server

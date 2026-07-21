@@ -167,7 +167,7 @@ export const run = async () => {
       .option('--remote-branch <name>', "Specific branch, tag, or commit to use (default: repository's default branch)")
       .option(
         '--remote-trust-config',
-        'Trust and load config files from remote repositories (disabled by default for security)',
+        'Trust and load config files from remote repositories (disabled by default for security; asks for confirmation on an interactive terminal)',
       )
       // Configuration Options
       .optionsGroup('Configuration Options')
@@ -204,7 +204,7 @@ export const run = async () => {
       )
       .option('--skill-project-name <name>', 'Override the project name used in generated Skills descriptions')
       .option('--skill-output <path>', 'Specify skill output directory path directly (skips location prompt)')
-      .option('-f, --force', 'Skip all confirmation prompts (currently: skill directory overwrite)')
+      .option('-f, --force', 'Skip all confirmation prompts (skill directory overwrite, remote config trust)')
       // Watch Mode
       .optionsGroup('Watch Mode')
       .option('-w, --watch', 'Watch for file changes and automatically re-pack')
@@ -247,7 +247,10 @@ export const run = async () => {
 };
 
 const commanderActionEndpoint = async (directories: string[], options: CliOptions = {}) => {
-  await runCli(directories, process.cwd(), options);
+  // Auto-enable file processors for real CLI invocations only. Library callers
+  // (`runCli`/`pack`) and MCP tools bypass this endpoint, so they default to OFF.
+  // Remote runs downgrade this based on --remote-trust-config in runRemoteAction.
+  await runCli(directories, process.cwd(), { enableFileProcessors: true, ...options });
 };
 
 /**
