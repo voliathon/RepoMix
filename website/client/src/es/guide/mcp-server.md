@@ -20,6 +20,27 @@ repomix --mcp
 
 Esto inicia Repomix en modo servidor MCP, haciéndolo disponible para asistentes de IA que soporten el Model Context Protocol.
 
+## Modo sandbox
+
+De forma predeterminada, el servidor MCP puede leer cualquier ruta a la que el usuario del host tenga acceso. Esto resulta conveniente para un asistente local de confianza, pero es demasiado amplio cuando el servidor se expone a un cliente o agente no confiable. La opción `--sandbox` confina las herramientas de archivos del servidor a un único directorio de espacio de trabajo:
+
+```bash
+# Confinar al directorio de trabajo actual
+repomix --mcp --sandbox
+
+# Confinar a un directorio específico
+repomix --mcp --sandbox path/to/project
+```
+
+Cuando el modo sandbox está activado:
+
+- **Cada ruta es relativa a la raíz del espacio de trabajo.** Las rutas absolutas, `~`, `..` y las rutas de unidad/UNC de Windows se rechazan, y las rutas que se resuelven fuera de la raíz (incluso a través de enlaces simbólicos) se descartan. Los resultados y los mensajes de error también son relativos, de modo que las rutas del host no quedan expuestas. Esto se aplica a los argumentos `directory` y `path` de la referencia de herramientas a continuación: en modo sandbox, pásalos como rutas relativas a la raíz del espacio de trabajo, no como las rutas absolutas que esas tablas describen en los demás casos.
+- **Solo se registran herramientas de solo lectura confinadas a la raíz:** `pack_codebase`, `read_repomix_output`, `grep_repomix_output`, `file_system_read_file` y `file_system_read_directory`. El empaquetado remoto, la generación de skills y la adjunción de salidas externas están deshabilitados, ya que acceden a la red, escriben archivos o hacen referencia a rutas arbitrarias. Las dos herramientas `file_system_*` en sí solo están disponibles en modo sandbox, donde la raíz del espacio de trabajo delimita lo que pueden alcanzar.
+
+Esto es un confinamiento a nivel de aplicación de la superficie de herramientas (defensa en profundidad), no un sandbox a nivel de sistema operativo. Si alojas el servidor para clientes no confiables, sigue ejecutándolo bajo el aislamiento habitual de tu plataforma (contenedores, usuarios dedicados).
+
+`--sandbox` solo afecta al servidor MCP; no tiene efecto sin `--mcp`.
+
 ## Configuración de servidores MCP
 
 Para usar Repomix como servidor MCP con asistentes de IA como Claude, necesitas configurar los ajustes de MCP:
@@ -185,7 +206,7 @@ Esta herramienta lee el contenido de un archivo de salida generado por Repomix. 
 **Características:**
 - Diseñado específicamente para entornos basados en web o aplicaciones en sandbox
 - Recupera el contenido de salidas generadas previamente usando su ID
-- Proporciona acceso seguro al código empaquetado sin requerir acceso al sistema de archivos
+- Proporciona acceso al código empaquetado sin requerir acceso al sistema de archivos
 - Soporta lectura parcial para archivos grandes
 
 **Ejemplo:**
@@ -230,48 +251,35 @@ Esta herramienta busca patrones en un archivo de salida de Repomix usando funcio
 
 ### file_system_read_file y file_system_read_directory
 
-El servidor MCP de Repomix proporciona dos herramientas de sistema de archivos que permiten a los asistentes de IA interactuar de manera segura con el sistema de archivos local:
+Estas dos herramientas de sistema de archivos solo están disponibles en [modo sandbox](#modo-sandbox) (`--sandbox`), donde la raíz del espacio de trabajo delimita lo que pueden alcanzar. Sin `--sandbox` no se registran.
 
 1. `file_system_read_file`
-  - Lee contenido de archivos del sistema de archivos local usando rutas absolutas
-  - Incluye validación de seguridad integrada para detectar y prevenir acceso a archivos que contienen información sensible
-  - Implementa validación de seguridad usando [Secretlint](https://github.com/secretlint/secretlint)
-  - Previene el acceso a archivos que contienen información sensible (claves API, contraseñas, secretos)
-  - Valida rutas absolutas para prevenir ataques de traversal de directorios
-  - Devuelve mensajes de error claros para rutas inválidas y problemas de seguridad
+  - Lee el contenido de un archivo en una ruta relativa a la raíz del espacio de trabajo (p. ej. `src/index.ts`)
+  - Rechaza contenido que coincida con formatos de secretos conocidos ([Secretlint](https://github.com/secretlint/secretlint)) como salvaguarda heurística adicional; el límite de acceso es la raíz del espacio de trabajo, no el escaneo
+  - Devuelve mensajes de error claros para rutas inválidas, sin exponer rutas del host
 
 2. `file_system_read_directory`
-  - Lista contenidos de un directorio usando una ruta absoluta
-  - Devuelve una lista formateada mostrando archivos y subdirectorios con indicadores claros
+  - Lista el contenido de un directorio en una ruta relativa a la raíz del espacio de trabajo (p. ej. `.` o `src`)
   - Muestra archivos y directorios con indicadores claros (`[FILE]` o `[DIR]`)
-  - Proporciona navegación segura de directorios con manejo apropiado de errores
-  - Valida rutas y asegura que sean absolutas
-  - Útil para explorar estructura de proyectos y entender organización del código base
-
-Ambas herramientas incorporan medidas de seguridad robustas:
-- Validación de rutas absolutas para prevenir ataques de traversal de directorios
-- Verificaciones de permisos para asegurar derechos de acceso apropiados
-- Integración con Secretlint para detección de información sensible
-- Mensajes de error claros para depuración y conciencia de seguridad
+  - Útil para explorar la estructura del proyecto y entender la organización del código base
 
 **Ejemplo:**
 ```typescript
 // Leer un archivo
 const fileContent = await tools.file_system_read_file({
-  path: '/absolute/path/to/file.txt'
+  path: 'src/index.ts'
 });
 
 // Listar contenidos de directorio
 const dirContent = await tools.file_system_read_directory({
-  path: '/absolute/path/to/directory'
+  path: 'src'
 });
 ```
 
 Estas herramientas son particularmente útiles cuando los asistentes de IA necesitan:
-- Analizar archivos específicos en el código base
+- Analizar archivos específicos en el espacio de trabajo
 - Navegar estructuras de directorios
 - Verificar existencia y accesibilidad de archivos
-- Asegurar operaciones seguras del sistema de archivos
 
 ## Beneficios de usar Repomix como servidor MCP
 

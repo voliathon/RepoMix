@@ -24,20 +24,20 @@ jobs:
           - node-version: 26
             test-case: "full"
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Run Repomix Action (Minimal)
         if: matrix['test-case'] == 'minimal'
-        uses: ./.github/actions/repomix
+        uses: $/.github/actions/repomix
         with:
           node-version: ${{ matrix.node-version }}
           output: "repomix-minimal-output.txt"
 
       - name: Run Repomix Action (Basic)
         if: matrix['test-case'] == 'basic'
-        uses: ./.github/actions/repomix
+        uses: $/.github/actions/repomix
         with:
           node-version: ${{ matrix.node-version }}
           directories: "src"
@@ -47,7 +47,7 @@ jobs:
 
       - name: Run Repomix Action (Full)
         if: matrix['test-case'] == 'full'
-        uses: ./.github/actions/repomix
+        uses: $/.github/actions/repomix
         with:
           node-version: ${{ matrix.node-version }}
           directories: "src tests"

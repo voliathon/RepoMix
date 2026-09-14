@@ -4,6 +4,7 @@ import path from 'node:path';
 import { promisify } from 'node:util';
 import { RepomixError } from '../../shared/errorHandle.js';
 import { logger } from '../../shared/logger.js';
+import { redactErrorMessage, redactUrl } from '../../shared/urlRedact.js';
 
 const execFileAsync = promisify(execFile);
 
@@ -106,7 +107,7 @@ export const execLsRemote = async (
     const result = await deps.execFileAsync('git', ['ls-remote', '--heads', '--tags', '--', url], gitRemoteOpts);
     return result.stdout || '';
   } catch (error) {
-    logger.trace('Failed to execute git ls-remote:', (error as Error).message);
+    logger.trace('Failed to execute git ls-remote:', redactErrorMessage(error));
     throw error;
   }
 };
@@ -127,7 +128,7 @@ export const execLsRemoteHead = async (
     const result = await deps.execFileAsync('git', ['ls-remote', '--', url, 'HEAD'], gitProbeOpts);
     return result.stdout || '';
   } catch (error) {
-    logger.trace('Failed to execute git ls-remote HEAD:', (error as Error).message);
+    logger.trace('Failed to execute git ls-remote HEAD:', redactErrorMessage(error));
     throw error;
   }
 };
@@ -184,7 +185,13 @@ export const execGitShallowClone = async (
     await deps.execFileAsync('git', ['clone', '--depth', '1', '--', url, directory], gitRemoteOpts);
   }
 
-  // Clean up .git directory
+  // Drop the clone's .git. This keeps git internals out of the packed output, but
+  // it is also load-bearing for safety, so keep it unconditional. Packing runs
+  // `git -C <dir> log` by default (output.git.sortByChanges), and git honors the
+  // repository's own .git/config — so a retained .git would let a cloned repo
+  // execute commands on this host through keys such as gpg.program (reached via
+  // log.showSignature). Making the removal conditional, for example to support
+  // diffs on a remote repo, would reopen that path.
   await fs.rm(path.join(directory, '.git'), { recursive: true, force: true });
 };
 
@@ -223,12 +230,12 @@ export const validateGitUrl = (url: string): void => {
   // Block dangerous git parameters that could be used for command injection
   const dangerousParams = ['--upload-pack', '--receive-pack', '--config', '--exec'];
   if (dangerousParams.some((param) => url.includes(param))) {
-    throw new RepomixError(`Invalid repository URL. URL contains potentially dangerous parameters: ${url}`);
+    throw new RepomixError(`Invalid repository URL. URL contains potentially dangerous parameters: ${redactUrl(url)}`);
   }
 
   // Check if the URL starts with git@ or https://
   if (!(url.startsWith('git@') || url.startsWith('https://'))) {
-    throw new RepomixError(`Invalid URL protocol for '${url}'. URL must start with 'git@' or 'https://'`);
+    throw new RepomixError(`Invalid URL protocol for '${redactUrl(url)}'. URL must start with 'git@' or 'https://'`);
   }
 
   try {
@@ -236,10 +243,8 @@ export const validateGitUrl = (url: string): void => {
       new URL(url);
     }
   } catch (error: unknown) {
-    // Redact embedded credentials in https URLs to avoid PII leakage
-    const redactedUrl = url.startsWith('https://') ? url.replace(/^(https?:\/\/)([^@/]+)@/i, '$1***@') : url;
-    logger.trace('Invalid repository URL:', (error as Error).message);
-    throw new RepomixError(`Invalid repository URL. Please provide a valid URL: ${redactedUrl}`);
+    logger.trace('Invalid repository URL:', redactErrorMessage(error));
+    throw new RepomixError(`Invalid repository URL. Please provide a valid URL: ${redactUrl(url)}`);
   }
 };
 
